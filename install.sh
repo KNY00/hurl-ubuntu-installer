@@ -62,7 +62,6 @@ main() {
     trap 'rm -rf "${tmp_build_root}"' EXIT
     cargo install hurl --version "${hurl_version}" --locked --root "${tmp_build_root}"
     $sudo_cmd install -m 0755 "${tmp_build_root}/bin/hurl" "${install_dir}/bin/hurl"
-    $sudo_cmd install -m 0755 "${tmp_build_root}/bin/hurlfmt" "${install_dir}/bin/hurlfmt"
     rm -rf "${tmp_build_root}"
     trap - EXIT
   else
@@ -82,7 +81,6 @@ main() {
 
   echo "==> [5/5] Verifying installation..."
   "${install_dir}/bin/hurl" --version
-  "${install_dir}/bin/hurlfmt" --version
   echo "[+] Hurl ${hurl_version} successfully compiled and installed!"
 }
 
