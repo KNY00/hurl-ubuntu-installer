@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint:
+    name: ShellCheck Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: '.'
+
+  test-ubuntu-26-04:
+    name: Build & Verify on Ubuntu 26.04
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:26.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Execute installer script
+        env:
+          CLEAN_APT: "true"
+        run: |
+          chmod +x ./install.sh
+          ./install.sh
+
+      - name: Verify hurl and hurlfmt binaries
+        run: |
+          hurl --version
+          hurlfmt --version
