@@ -72,8 +72,9 @@ main() {
   echo "    Creating backward-compatibility shim for hurlfmt..."
   $sudo_cmd tee "${shim_path}" > /dev/null << 'EOF'
 #!/usr/bin/env bash
-# Backward compatibility wrapper for removed hurlfmt executable
-exec hurl --format text "$@"
+# Backward compatibility wrapper: hurl does not support --format
+# Use --check to validate files syntax and formatting
+exec hurl --check "$@"
 EOF
   $sudo_cmd chmod 0755 "${shim_path}"
 
