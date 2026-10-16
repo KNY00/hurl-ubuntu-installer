@@ -36,7 +36,7 @@ jobs:
           chmod +x ./install.sh
           ./install.sh
 
-      - name: Verify hurl and hurlfmt binaries
+      - name: Check Hurl files formatting
         run: |
           hurl --version
-          hurlfmt --version
+          hurl --format text --check **/*.hurl

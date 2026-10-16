@@ -31,7 +31,6 @@ main() {
   export DEBIAN_FRONTEND=noninteractive
 
   echo "==> [1/5] Installing native build dependencies..."
-  # APT 3.0+ (Ubuntu 26.04) strictly forbids passing arguments like -y to 'update'
   $sudo_cmd apt-get update
   $sudo_cmd apt-get install -y --no-install-recommends \
     curl \
@@ -67,6 +66,16 @@ main() {
   else
     cargo install hurl --version "${hurl_version}" --locked --root "${install_dir}"
   fi
+
+  # Compatibility shim for legacy scripts expecting hurlfmt
+  local shim_path="${install_dir}/bin/hurlfmt"
+  echo "    Creating backward-compatibility shim for hurlfmt..."
+  $sudo_cmd tee "${shim_path}" > /dev/null << 'EOF'
+#!/usr/bin/env bash
+# Backward compatibility wrapper for removed hurlfmt executable
+exec hurl --format text "$@"
+EOF
+  $sudo_cmd chmod 0755 "${shim_path}"
 
   echo "==> [4/5] Cleaning up build artifacts..."
   if [ "${rust_was_preinstalled}" = false ] && [ "${keep_rust}" = false ]; then
