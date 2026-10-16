@@ -32,6 +32,7 @@ jobs:
         env:
           CLEAN_APT: "true"
         run: |
+          sed -i 's/\r$//' ./install.sh
           chmod +x ./install.sh
           ./install.sh
 
