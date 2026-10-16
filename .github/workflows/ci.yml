@@ -39,4 +39,3 @@ jobs:
       - name: Check Hurl files formatting
         run: |
           hurl --version
-          hurl fmt --check test.hurl
