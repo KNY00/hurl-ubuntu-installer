@@ -31,7 +31,8 @@ main() {
   export DEBIAN_FRONTEND=noninteractive
 
   echo "==> [1/5] Installing native build dependencies..."
-  $sudo_cmd apt-get update -y$sudo_cmd apt-get install -y --no-install-recommends \
+  # APT 3.0+ (Ubuntu 26.04) strictly forbids passing arguments like -y to 'update'
+  $sudo_cmd apt-get update$sudo_cmd apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
     build-essential \
